@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qur'an Offline Player</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#4f46e5" />
+</head>
+<body>
+  <h1>📖 Qur'an Offline Player</h1>
+
+  <div class="player">
+    <select id="surahSelect">
+      <option value="audio/001.mp3">Surah Al-Fataha(01)</option>
+       <option value="audio/018.mp3">Surah Al-Kahaf (91)</option>
+      <option value="audio/071.mp3">Surah Al-Nooh (92)</option>
+      <option value="audio/072.mp3">Surah Al-jinn (93)</option>
+      <option value="audio/076.mp3">Surah Al-insaan(01)</option>
+    </select>
+
+    <audio id="player" controls></audio>
+
+    <div class="buttons">
+      <button onclick="playAudio()">▶️ Play</button>
+      <button onclick="pauseAudio()">⏸️ Pause</button>
+      <button onclick="stopAudio()">⏹️ Stop</button>
+    </div>
+  </div>
+
+  <p id="status"></p>
+
+  <script>
+    const player = document.getElementById('player');
+    const select = document.getElementById('surahSelect');
+    const status = document.getElementById('status');
+
+    player.src = select.value;
+
+    select.addEventListener('change', () => {
+      player.src = select.value;
+      player.play();
+      status.innerText = 'Now Playing: ' + select.options[select.selectedIndex].text;
+    });
+
+    function playAudio() {
+      player.play();
+      status.innerText = 'Now Playing: ' + select.options[select.selectedIndex].text;
+    }
+
+    function pauseAudio() {
+      player.pause();
+      status.innerText = 'Paused';
+    }
+
+    function stopAudio() {
+      player.pause();
+      player.currentTime = 0;
+      status.innerText = 'Stopped';
+    }
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('✅ Service Worker Registered'))
+        .catch(err => console.log('SW failed:', err));
+    }
+  </script>
+  <h1>📖 Developed by Badraawi</h1>
+</body>
+</html>
